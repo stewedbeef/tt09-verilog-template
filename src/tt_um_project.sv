@@ -17,9 +17,9 @@ module tt_um_project (
 );
 
   // All output pins must be assigned. If not used, assign to 0.
-  assign uo_out  = ui_in + uio_in;  // Example: ou_out is the sum of ui_in and uio_in
+  // assign uo_out  = ui_in + uio_in;  // Example: ou_out is the sum of ui_in and uio_in
   assign uio_out = 8'h0;
-  assign uio_oe = 8'h1;
+  assign uio_oe = 8'h0;
 
   // List all unused inputs to prevent warnings
   reg [21:0] div;
@@ -32,7 +32,7 @@ module tt_um_project (
   assign uo_out[6:1] = {6{uo_out[0]}};
   reg indicator;
   assign uo_out[7] = indicator;
-  always @(posedge clk) begin
+  always_ff @(posedge clk) begin
     if (&div) begin
       indicator <= ~indicator;
     end

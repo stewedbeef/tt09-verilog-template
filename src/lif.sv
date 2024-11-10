@@ -11,7 +11,7 @@ module lif(
     reg [3:0] timer;
     
     assign spike = U >= threshold;
-    always @(posedge clk) begin
+    always_ff @(posedge clk) begin
         if (rst_n) begin
             timer <= 0;
             U <= 0;
