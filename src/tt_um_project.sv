@@ -22,9 +22,14 @@ module tt_um_project (
   assign uio_oe = 8'h0;
 
   // List all unused inputs to prevent warnings
-  reg [21:0] div;
+  reg [25:0] div;
+  wire sec = div == 26'd49_999_999;
   always @(posedge clk) begin
-    div <= div + 1;
+    if (sec) begin
+      div <= '0;
+    end else begin
+      div <= div + 1;
+    end
   end
 
   reg [7:0] U;
@@ -33,7 +38,7 @@ module tt_um_project (
   reg indicator;
   assign uo_out[7] = indicator;
   always_ff @(posedge clk) begin
-    if (&div) begin
+    if (sec) begin
       indicator <= ~indicator;
     end
   end
