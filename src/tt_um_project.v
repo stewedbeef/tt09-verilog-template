@@ -18,10 +18,17 @@ module tt_um_example (
 
   // All output pins must be assigned. If not used, assign to 0.
   assign uo_out  = ui_in + uio_in;  // Example: ou_out is the sum of ui_in and uio_in
-  assign uio_out = 0;
-  assign uio_oe  = 0;
+  assign uio_out = 8'h0;
+  assign uio_oe = 8'h1;
 
   // List all unused inputs to prevent warnings
-  wire _unused = &{ena, clk, rst_n, 1'b0};
+  reg [22:0] div;
+  always @(posedge clk) begin
+    div <= div + 1;
+  end
+
+  reg [7:0] U;
+  lif lif1(.clk(clk), .I(ui_in), .rst_n(~rst_n), .en(&div), .spike(uo_out[0]));
+  assign uo_out[7:1] = {7{uo_out[0]}};
 
 endmodule
