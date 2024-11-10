@@ -22,13 +22,20 @@ module tt_um_project (
   assign uio_oe = 8'h1;
 
   // List all unused inputs to prevent warnings
-  reg [22:0] div;
+  reg [21:0] div;
   always @(posedge clk) begin
     div <= div + 1;
   end
 
   reg [7:0] U;
   lif lif1(.clk(clk), .I(ui_in), .rst_n(~rst_n), .en(&div), .spike(uo_out[0]));
-  assign uo_out[7:1] = {7{uo_out[0]}};
+  assign uo_out[6:1] = {6{uo_out[0]}};
+  reg indicator;
+  assign uo_out[7] = indicator;
+  always @(posedge clk) begin
+    if (&div) begin
+      indicator <= ~indicator;
+    end
+  end
 
 endmodule
